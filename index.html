@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎄Merry Christmas Phương Thảo🎄</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Chống chọn văn bản để trải nghiệm mượt hơn */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        h1 {
+            /* Sử dụng vw để tự co giãn theo chiều rộng màn hình */
+            font-size: 8vw; 
+            margin: 10px 0;
+            text-shadow: 0 0 15px #ff0000;
+            padding: 0 10px;
+        }
+
+        /* Điều chỉnh cho màn hình lớn hơn (như Tablet/PC) */
+        @media (min-width: 600px) {
+            h1 { font-size: 42px; }
+            #typing { font-size: 24px !important; }
+        }
+
+        #typing {
+            font-size: 5vw; /* Chữ tự động vừa với màn hình dọc điện thoại */
+            margin: 15px;
+            min-height: 160px;
+            line-height: 1.6;
+            max-width: 90%;
+            font-weight: 500;
+            color: #f1f1f1;
+            word-wrap: break-word;
+        }
+
+        .heart {
+            font-size: 18vw; /* Trái tim to rõ trên điện thoại */
+            max-size: 80px;
+            animation: pulse 1.2s infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px #ff4d6d);
+            -webkit-tap-highlight-color: transparent;
+            z-index: 10;
+            margin-top: 10px;
+        }
+
+        @media (min-width: 600px) {
+            .heart { font-size: 80px; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #hint {
+            margin-top: 15px;
+            font-size: 4vw;
+            color: #ffda79;
+            font-weight: bold;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .snow {
+            position: fixed;
+            top: -10px;
+            color: white;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh); } }
+    </style>
+</head>
+<body>
+
+    <audio id="noelMusic" loop preload="auto">
+        <source src="https://files.catbox.moe/973fmx.mp3" type="audio/mpeg">
+    </audio>
+
+    <h1>🎄 Merry Christmas 🎄<br>Phương Thảo</h1>
+    
+    <div id="typing"></div>
+    
+    <div class="heart" id="heartBtn" onclick="playMusic()">❤️</div>
+    <p id="hint">Chạm vào trái tim nha!</p>
+
+    <script>
+        // Thêm icon trực tiếp vào chuỗi text để sinh động
+        const text = `Chúc em Giáng Sinh an lành ❄️\nẤm áp ngập tràn yêu thương\nNiềm vui và hạnh phúc bên gia đình\nChúc em tất cả trừ vất vả 😇\nCười thật nhiều mỗi ngày 😄✨\nHy vọng những điều may mắn và tốt đẹp nhất\nsẽ luôn mỉm cười với em! 🎁💝`;
+
+        let i = 0;
+        const music = document.getElementById("noelMusic");
+
+        function typingEffect() {
+            if (i < text.length) {
+                let char = text.charAt(i);
+                document.getElementById("typing").innerHTML += char === "\n" ? "<br>" : char;
+                i++;
+                // Tốc độ gõ chữ mượt mà cho mobile
+                setTimeout(typingEffect, 80);
+            }
+        }
+
+        function playMusic() {
+            // Phát nhạc và xử lý autoplay trên mobile
+            music.play().then(() => {
+                console.log("Music playing");
+            }).catch(e => {
+                console.error("Playback failed", e);
+            });
+
+            document.getElementById("hint").style.display = "none";
+            document.getElementById("heartBtn").style.animation = "none";
+            
+            if (i === 0) {
+                typingEffect();
+                createSnowEffect();
+            }
+        }
+
+        function createSnowEffect() {
+            setInterval(() => {
+                const snow = document.createElement("div");
+                snow.classList.add("snow");
+                const icons = ["❄️", "❅", "❆", "✨", "🤍"];
+                snow.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                
+                snow.style.left = Math.random() * window.innerWidth + "px";
+                // Giới hạn kích thước tuyết để không che mất chữ trên màn hình nhỏ
+                snow.style.fontSize = Math.random() * 10 + 10 + "px";
+                snow.style.opacity = Math.random() * 0.7 + 0.3;
+                snow.style.animationDuration = Math.random() * 3 + 4 + "s";
+                
+                document.body.appendChild(snow);
+                setTimeout(() => snow.remove(), 7000);
+            }, 250); // Giảm bớt mật độ tuyết một chút để đỡ lag máy yếu
+        }
+    </script>
+</body>
+</html>
